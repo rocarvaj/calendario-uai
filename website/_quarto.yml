@@ -1,0 +1,15 @@
+project:
+  type: website
+
+website:
+  title: "Calendario Académico UAI"
+  navbar:
+    left:
+      - text: "Inicio"
+        href: index.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: false
+    css: assets/calendar.css
