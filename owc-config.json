@@ -1,9 +1,18 @@
 {
-    "css": ".dhx_scale_holder_now, .dhx_now .dhx_month_head, .dhx_now .dhx_month_body { background-color: #cdd6f9;}",
+    "controls": [
+        "next",
+        "previous",
+        "today",
+        "date",
+        "menu"
+    ],
+    "css": ".dhx_scale_holder_now, .dhx_now .dhx_month_head, .dhx_now .dhx_month_body { background-color: #c7eeff;}",
     "language": "es",
+    "menu_shows_calendar_names": false,
     "tabs": [
         "month",
         "agenda"
     ],
+    "title": "Calendario académico UAI",
     "url": "https://raw.githubusercontent.com/rocarvaj/calendario-uai/refs/heads/main/calendario-academico-uai-2025_events.ics"
 }
