@@ -1,0 +1,9 @@
+{
+    "css": ".dhx_scale_holder_now, .dhx_now .dhx_month_head, .dhx_now .dhx_month_body { background-color: #cdd6f9;}",
+    "language": "es",
+    "tabs": [
+        "month",
+        "agenda"
+    ],
+    "url": "https://raw.githubusercontent.com/rocarvaj/calendario-uai/refs/heads/main/calendario-academico-uai-2025_events.ics"
+}
