@@ -1,0 +1,16 @@
+---
+title: "Acerca de este calendario"
+format: html
+author: "Rodolfo Carvajal"
+date: last-modified
+---
+
+Este calendario fue extraído desde el [archivo PDF que contiene el calendario académico de la Universidad Adolfo Ibáñez](https://uai.cdn7pm.net/documentos/calendario-academico-uai-2025.pdf).
+
+## Herramientas
+Todo el código usado está disponible en el repositorio en GitHub.
+
+- Para extraer los eventos desde el archivo PDF se usó la librería [Camelot](https://camelot-py.readthedocs.io/en/stable/).
+- Para procesar los eventos y exportarlos a un archivo ICS, se usó algo de vibe-coding con GitHub Copilot.
+- Para mostrar los eventos del archivo ICS en formato de calendario, se usó [Open Web Calendar](https://open-web-calendar.hosted.quelltext.eu/).
+- Para hacer esta página, se usó [Quarto](https://quarto.org/).

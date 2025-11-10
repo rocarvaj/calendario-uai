@@ -1,52 +1,14 @@
 ---
-title: "Calendario académico UAI"
+title: ""
 format: html
 ---
 
-::: {.filters}
-Filtrar por categoría:
-<select id="categoryFilter" multiple onchange="filterEvents()">
-  <option value="all">Todos</option>
-  <option value="S1">S1</option>
-  <option value="S2">S2</option>
-  <option value="B1">B1</option>
-  <option value="B2">B2</option>
-  <option value="B3">B3</option>
-  <option value="B4">B4</option>
-</select>
+Puedes descargar el archivo ICS para importar a tu aplicación de calendario [aquí](https://raw.githubusercontent.com/rocarvaj/calendario-uai/refs/heads/main/calendario-academico-uai-2025_events.ics).
+Puedes también abrir el calendario en pantalla completa y ponerlo en tus favoritos, usando [este link](https://open-web-calendar.hosted.quelltext.eu/calendar.html?specification_url=https://raw.githubusercontent.com/rocarvaj/calendario-uai/refs/heads/main/owc-config.json).
 
-Buscar por título:
-<input type="text" id="searchInput" placeholder="Escribe para buscar..." oninput="filterEvents()">
-:::
-
-
-```{python}
-#| echo: false
-from IPython.display import display, HTML
-import pandas as pd
-
-events = pd.read_csv("data/calendario-academico-uai-2025_events.csv")
-events["date"] = pd.to_datetime(events["date"], errors="coerce")
-events["page"] = pd.to_numeric(events["page"], errors="coerce").fillna(0).astype(int)
-events = events.sort_values(by=["page", "date"])
-events["day"] = events["date"].dt.date
-
-html_parts = []
-for day, group in events.groupby("day", sort=True):
-    day_str = pd.to_datetime(day).strftime("%Y-%m-%d")
-    html_parts.append(f'<h3 class="date-header">{day_str}</h3>')
-    for _, row in group.iterrows():
-        title = row.get("title","")
-        page = row.get("page","")
-        category = str(row.get("category","")).strip()
-        if category == "" or category.lower() == "nan":
-            category = ""
-        cat_html = f'<span class="badge">{category}</span>'
-        data_attr = category.replace('"', "'")
-        html_parts.append(f'<div class="event" data-category="{data_attr}" data-page="{page}">{title} {cat_html}</div>')
-
-html = "\n".join(html_parts)
-display(HTML(html))
-```
-
-<script src="assets/calendar.js"></script>
+<iframe id="open-web-calendar" 
+    style="background:url('https://raw.githubusercontent.com/niccokunzmann/open-web-calendar/master/static/img/loaders/circular-loader.gif') center center no-repeat;"
+    src="https://open-web-calendar.hosted.quelltext.eu/calendar.html?specification_url=https://raw.githubusercontent.com/rocarvaj/calendario-uai/refs/heads/main/owc-config.json"
+    sandbox="allow-scripts allow-same-origin allow-top-navigation allow-downloads"
+    allowTransparency="true" scrolling="no" 
+    frameborder="0" height="767px" width="100%"></iframe>

@@ -7,9 +7,13 @@ website:
     left:
       - text: "Inicio"
         href: index.qmd
+      - text: "Acerca de"
+        href: acerca-de.qmd
+    tools:
+      - icon: github
+        href: https://github.com/rocarvaj/calendario-uai
 
 format:
   html:
     theme: cosmo
     toc: false
-    css: assets/calendar.css
