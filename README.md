@@ -7,7 +7,7 @@ Este repositorio contiene el calendario académico de la Universidad Adolfo Ibá
 Para importar el calendario a tu calendario personal, usa el archivo `calendario-academico-uai-XXXX.ics` (con el año más reciente) y las siguientes instrucciones:
 
 - [En Google Calendar](https://support.google.com/calendar/answer/37118?hl=es&co=GENIE.Platform%3DDesktop).
-- [En Outlook](https://support.microsoft.com/es-es/office/importar-calendarios-a-outlook-8e8364e1-400e-4c0f-a573-fe76b5a2d379)).
+- [En Outlook](https://support.microsoft.com/es-es/office/importar-calendarios-a-outlook-8e8364e1-400e-4c0f-a573-fe76b5a2d379).
 
 
 ## Extracción de eventos
