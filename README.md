@@ -4,7 +4,7 @@
 
 Este repositorio contiene el calendario académico de la Universidad Adolfo Ibáñez en formato iCalendar (.ics), para importarlo en tu calendario personal y tener una vista más clara de los eventos.
 
-Para importar el calendario a tu calendario personal, usa el archivo `calendario-academico-uai-XXXX.ics` (con el año más reciente) y las siguientes instrucciones:
+Para importar el calendario a tu calendario personal, usa el archivo `calendario-academico-uai-XXXX_events.ics` (con "XXXX", el año más reciente) y las siguientes instrucciones:
 
 - [En Google Calendar](https://support.google.com/calendar/answer/37118?hl=es&co=GENIE.Platform%3DDesktop).
 - [En Outlook](https://support.microsoft.com/es-es/office/importar-calendarios-a-outlook-8e8364e1-400e-4c0f-a573-fe76b5a2d379).
