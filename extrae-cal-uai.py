@@ -6,40 +6,38 @@
 # ]
 # ///
 
-import sys
-import re
-import camelot
 import datetime
-from collections import defaultdict
-import csv
 import hashlib
+import re
+import sys
+from collections import defaultdict
+
+import camelot
 import matplotlib.pyplot as plt
 
-def main() -> None:
 
+def main() -> None:
     original_file = sys.argv[1]
 
     print("Hello from extrae-cal-uai.py!")
     print(f"Parsing {original_file}")
-    tables = camelot.read_pdf(original_file, 
-                              strip_text='\n', 
-                              pages='all', 
-                              line_scale=100, 
-                              copy_text=['h'])
-    
+    tables = camelot.read_pdf(
+        original_file, strip_text="\n", pages="all", line_scale=100, copy_text=["h"]
+    )
+
     print(f"Found {len(tables)} tables")
     print(tables[0].df)
-    
-    #camelot.plot(tables[0], kind='grid')
-    #plt.show()
-    
-    #exit(0)
-    
+
+    # camelot.plot(tables[0], kind='grid')
+    # plt.show()
+
+    # exit(0)
+
     # Initialize events list; first row (headers) and first column (week labels) will be skipped later
     events = []
 
     date_pat = re.compile(
-        r'^\s*(\d{1,2})\s*[-‐‑—–./]?\s*(ene|feb|mar|abr|may|jun|jul|ago|sep|set|sept|oct|nov|dic)\.?\s*$',
+        r"^\s*(\d{1,2})\s*[-‐‑—–./]?\s*(ene|feb|mar|abr|may|jun|jul|ago|sep|set|sept|oct|nov|dic)\.?\s*$",
         re.IGNORECASE,
     )
 
@@ -67,7 +65,9 @@ def main() -> None:
             r = 1  # ignore first row
             while r < rows:
                 cell = clean_text(df.iat[r, c])
-                print(f"Table {t_idx}, Row {r}, Col {c}: '{cell}', is_date_cell: {is_date_cell(cell)}")
+                print(
+                    f"Table {t_idx}, Row {r}, Col {c}: '{cell}', is_date_cell: {is_date_cell(cell)}"
+                )
                 if is_date_cell(cell):
                     k = r + 1
                     collected = 0
@@ -83,7 +83,14 @@ def main() -> None:
                             for part in re.split(r"[\n•]+", below):
                                 part = clean_text(part)
                                 if part:
-                                    events.append({"date": cell, "event": part, "table": t_idx, "tags": tags})
+                                    events.append(
+                                        {
+                                            "date": cell,
+                                            "event": part,
+                                            "table": t_idx,
+                                            "tags": tags,
+                                        }
+                                    )
                                     collected += 1
                         elif collected > 0:
                             break
@@ -92,23 +99,32 @@ def main() -> None:
                 else:
                     r += 1
 
-
     print(f"Extracted {len(events)} events")
     for e in events:
         print(f"{e['date']}: {e['event']}, (table {e['table']}), tags: {e['tags']}")
 
-    
     # Export to ICS file, merging repeated continuous days into single all-day events
 
     # Helper: parse "DD MMM" to a date object with inferred year
     month_map = {
-        'ene': 1, 'feb': 2, 'mar': 3, 'abr': 4, 'may': 5, 'jun': 6,
-        'jul': 7, 'ago': 8, 'sep': 9, 'set': 9, 'sept': 9, 'oct': 10,
-        'nov': 11, 'dic': 12
+        "ene": 1,
+        "feb": 2,
+        "mar": 3,
+        "abr": 4,
+        "may": 5,
+        "jun": 6,
+        "jul": 7,
+        "ago": 8,
+        "sep": 9,
+        "set": 9,
+        "sept": 9,
+        "oct": 10,
+        "nov": 11,
+        "dic": 12,
     }
 
     def parse_event_date(e):
-        m = date_pat.match(e['date'])
+        m = date_pat.match(e["date"])
         if not m:
             return None
         day = int(m.group(1))
@@ -117,9 +133,9 @@ def main() -> None:
         if not month:
             return None
         current_year = datetime.datetime.now().year
-        if month == 12 and e['table'] == 0:
+        if month == 12 and e["table"] == 0:
             current_year -= 1
-        elif month == 1 and e['table'] > 1:
+        elif month == 1 and e["table"] > 1:
             current_year += 1
         try:
             return datetime.date(current_year, month, day)
@@ -145,7 +161,7 @@ def main() -> None:
         d = parse_event_date(e)
         if not d:
             continue
-        title_orig = e['event'].strip()
+        title_orig = e["event"].strip()
         title_norm = re.sub(r"\s+", " ", title_orig).strip().lower()
         if title_norm not in grouped:
             grouped[title_norm] = {
@@ -155,7 +171,7 @@ def main() -> None:
             }
         grouped[title_norm]["dates"].add(d)
         grouped[title_norm]["titles_by_date"][d] = title_orig
-        for tag in e['tags']:
+        for tag in e["tags"]:
             grouped[title_norm]["tags_by_date"][d].add(tag)
 
     # Build ICS
@@ -182,7 +198,9 @@ def main() -> None:
                 # flush current run
                 start = run[0]
                 end = run[-1]
-                summary = data["titles_by_date"].get(start, next(iter(data["titles_by_date"].values())))
+                summary = data["titles_by_date"].get(
+                    start, next(iter(data["titles_by_date"].values()))
+                )
                 cats = set()
                 for rd in run:
                     cats.update(data["tags_by_date"].get(rd, set()))
@@ -193,7 +211,10 @@ def main() -> None:
                 if cats:
                     lines.append(f"CATEGORIES:{','.join(sorted(cats))}")
                 lines.append(f"DTSTART;VALUE=DATE:{start.strftime('%Y%m%d')}")
-                lines.append(f"DTEND;VALUE=DATE:{(end + datetime.timedelta(days=1)).strftime('%Y%m%d')}")
+                lines.append(
+                    f"DTEND;VALUE=DATE:{(end + datetime.timedelta(days=1)).strftime('%Y%m%d')}"
+                )
+                lines.append("TRANSP:TRANSPARENT")
                 lines.append("END:VEVENT")
                 total_vevents += 1
                 run = [d]
@@ -202,7 +223,9 @@ def main() -> None:
         if run:
             start = run[0]
             end = run[-1]
-            summary = data["titles_by_date"].get(start, next(iter(data["titles_by_date"].values())))
+            summary = data["titles_by_date"].get(
+                start, next(iter(data["titles_by_date"].values()))
+            )
             cats = set()
             for rd in run:
                 cats.update(data["tags_by_date"].get(rd, set()))
@@ -213,7 +236,10 @@ def main() -> None:
             if cats:
                 lines.append(f"CATEGORIES:{','.join(sorted(cats))}")
             lines.append(f"DTSTART;VALUE=DATE:{start.strftime('%Y%m%d')}")
-            lines.append(f"DTEND;VALUE=DATE:{(end + datetime.timedelta(days=1)).strftime('%Y%m%d')}")
+            lines.append(
+                f"DTEND;VALUE=DATE:{(end + datetime.timedelta(days=1)).strftime('%Y%m%d')}"
+            )
+            lines.append("TRANSP:TRANSPARENT")
             lines.append("END:VEVENT")
             total_vevents += 1
 
@@ -225,7 +251,7 @@ def main() -> None:
         f.write("\r\n".join(lines) + "\r\n")
 
     print(f"Events exported to {output_file} ({total_vevents} vevents)")
-    
+
 
 if __name__ == "__main__":
     main()
